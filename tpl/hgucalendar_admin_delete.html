@@ -1,0 +1,27 @@
+<form action="./index.php?" method="post" >
+<input type="hidden" name="mid" value="{$modul_info->module_srl}" />
+<input type="hidden" name="act" value="procHgucalendarAdminDelete" />
+<input type="hidden" name="module_srl" value="{$module_srl}" />
+ 
+    <h3 class="xeAdmin">{$lang->confirm_delete}</h3>
+    <table border='1' cellspacing="0" class="rowTable">
+    <tr>
+        <th scope="row"><div>{$lang->module_name}</div></th>
+        <td class="wide">{$module_info->mid}</td>
+    </tr>
+    <tr>
+        <th scope="row"><div>{$lang->module}</div></th>
+        <td>{$module_info->module}</td>
+    </tr>
+	<tr>
+		<th scope="row"><div>mid</div></th>
+		<td>{$module_info->module_srl}</td>
+	</tr>
+    <tr>
+        <th colspan="2" class="button">
+            <span class="button black strong"><input type="submit" value="{$lang->cmd_delete}" /></span>
+            <span class="button"><input type="button" value="{$lang->cmd_back}" onclick="history.back(); return false;" /></span>
+        </th>
+    </tr>
+    </table>
+</form>

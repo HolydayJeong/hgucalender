@@ -1,0 +1,13 @@
+<query id="seatReserve" action="insert">
+    <tables>
+        <table name="hgucalendar_seat" />
+    </tables>
+    <columns>
+		<column name="event_srl" var="event_srl" notnull="notnull" />
+		<column name="id" var="id" notnull="notnull" />
+		<column name="name" var="name" notnull="notnull" />
+		<column name="seat" var="seat" notnull="notnull" />
+		<column name="regdate" var="regdate" notnull="notnull" />
+		<column name="regtime" var="regtime" notnull="notnull" />
+    </columns>
+</query>

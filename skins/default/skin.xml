@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+    <title xml:lang="ko">테스트 모듈의 기본 스킨</title>
+    <title xml:lang="en">Default Skin for Test Module</title>
+    <description xml:lang="ko">
+        테스트 모듈의 기본 스킨입니다.
+    </description>
+    <description xml:lang="en">
+        Default skin for test module
+    </description>
+    <version>0.1</version>
+    <date>2013-01-09</date>
+
+    <author email_address="developers@developers.com" link="http://developers.com/">
+        <name xml:lang="ko">CRA</name>
+        <name xml:lang="en">CRA</name>
+    </author>
+</skin>

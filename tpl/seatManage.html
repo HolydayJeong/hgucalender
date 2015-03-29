@@ -1,0 +1,142 @@
+<style>
+	.today
+	{
+		background-color: rgba(0, 0, 255, 0.3);
+	}
+</style>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<form action="./" method="post" id="form">
+	<input type="hidden" name="act" value="procHgucalendarSeatManage">
+	<input type="hidden" id="event_srl" name="event_srl" value="">
+	<input type="hidden" id="id" name="id" value="">
+	<input type="hidden" id="seat" name="seat" value="">
+	<input type="hidden" id="command" name="command" value="">
+
+</form>
+<table align='center' border='1' size="100%">
+	<tr><th colspan="8">신청자 명단</th>
+	</tr>
+	<tr align="center">
+		<td size="10%">아이디</td>
+		<td size="10%">이름</td>
+		<td size="5%">자리번호</td>
+		<td size="25%">등록일자</td>
+		<td size="20%">등록시간</td>
+		<td size="20%">지난시간</td>
+		<td size="10%">확정</td>
+		<td size="10%">취소</td>
+	<tr>
+
+<script>
+
+(function($) {
+	$(document).ready(function() {
+		  /// event_srl 따오기 ///
+		url = location.href;
+		urlIndex = url.indexOf("?");
+		url = url.substring(urlIndex+1);
+		urlList = url.split("&");
+		event_srl = urlList[2];
+		event_srl = event_srl.substring(10);
+		/// event_srl 따오기 끝 ///
+
+		$.permit = function(seat){
+			<!--@if($request->id)-->
+				id = "{$request->id}";
+				
+			<!--@else-->
+				<!--@foreach($requests as $no)-->
+				if(seat == {$no->seat})
+					id = "{$no->id}";
+				<!--@end-->
+			<!--@end-->
+			alert(id+" "+seat);
+			if(confirm('입금이 되었습니까?\n주의! 되돌릴 수 없습니다!')){
+				$('#event_srl').val(event_srl);
+				$('#id').val(id);
+				$('#seat').val(seat);
+				$('#command').val('1'); // 1: 확정, 2: 취소
+				$('#form').submit();
+			}	
+		}
+
+		$.cancel = function(seat){
+			<!--@if($request->id)-->
+				id = "{$request->id}";
+				
+			<!--@else-->
+				<!--@foreach($requests as $no)-->
+				if(seat == {$no->seat})
+					id = "{$no->id}";
+				<!--@end-->
+			<!--@end-->
+
+			if(confirm('취소시키겠습니까?')){
+				$('#event_srl').val(event_srl);
+				$('#id').val(id);
+				$('#seat').val(seat);
+				$('#command').val('0'); // 1: 확정, 2: 취소
+				$('#form').submit();
+			}
+		}
+
+	});
+})(jQuery);
+
+	
+with(document){
+	/// 날짜 함수 ///
+    var now = new Date();
+	var year = now.getYear() +1900;
+	var month = now.getMonth()+1;   
+	var today = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+
+	write('<tr class="today" align="center"><td colspan="3">현재</td><td >'+year+'-'+month+'-'+today+' </td><td >'+hour+':'+minute+'</td></tr>');
+	
+
+	<!--@if($requests->id)--> //1명일 경우
+		<!--@if($requests->confirm == 1)-->
+			write('<tr align="center">');
+			write('<td>{$no->id}</td><td>{$no->name}</td><td>{$no->seat}</td><td>{$no->regdate}</td><td>{$no->regtime}</td><td>확정</td><td></td><td><a href="#" onclick=$.cancel({$no->seat});>취소</a></td>');
+			write('</tr>');
+		<!--@else-->
+			dateinfo = "{$requests->regdate} {$requests->regtime}";
+			curdate = new Date(dateinfo); // 현재 일자 구하기
+			datePassed = Math.ceil((now.getTime() - curdate.getTime())/(1000*60*60)); // 지난 시간 구하기
+			console.log(datePassed);
+			write('<tr align="center">');
+			write('<td>{$requests->id}</td><td>{$requests->name}</td><td>{$requests->seat}</td><td>{$requests->regdate}</td><td>{$requests->regtime}</td><td>'+datePassed+'시간</td><td><a href="#" onclick=$.permit({$requests->seat});>확정</a></td><td><a href="#" onclick=$.cancel({$requests->seat});>취소</a></td>');
+			write('</tr>');
+		<!--@end-->
+
+	<!--@else-->
+		<!--@foreach($requests as $no)-->
+			console.log({$no->confirm});
+			<!--@if($no->confirm == 1)-->
+				write('<tr align="center">');
+				write('<td>{$no->id}</td><td>{$no->name}</td><td>{$no->seat}</td><td>{$no->regdate}</td><td>{$no->regtime}</td><td>확정</td><td></td><td><a href="#" onclick=$.cancel({$no->seat});>취소</a></td>');
+				write('</tr>');
+			<!--@else-->
+				year = "{$no->regdate}".substr(0,4);
+				month = "{$no->regdate}".substr(5,2);
+				month = month.replace("-","");
+				day = "{$no->regdate}".substr(8,2);
+				hour = "{$no->regtime}".substr(0,2);
+				hour = hour.replace(":","");
+				min = "{$no->regtime}".substr(1,3);
+				min = min.replace(":","");
+
+				curdate = new Date(year, month, day, hour, min); // 현재 일자 구하기
+				datePassed = Math.ceil((now.getTime() - curdate.getTime())/(1000*60*60)); // 지난 시간 구하기
+				write('<tr align="center">');
+				write('<td>{$no->id}</td><td>{$no->name}</td><td>{$no->seat}</td><td>{$no->regdate}</td><td>{$no->regtime}</td><td>'+datePassed+'시간</td><td><a href="#" onclick=$.permit({$no->seat});>확정</a></td><td><a href="#" onclick=$.cancel({$no->seat});>취소</a></td>');
+				write('</tr>');
+			<!--@end-->
+
+		<!--@end-->
+	<!--@end-->
+}
+</script>
+</table>

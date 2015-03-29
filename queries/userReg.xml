@@ -1,0 +1,12 @@
+<query id="userReg" action="insert">
+    <tables>
+        <table name="hgucalendar_applicant" />
+    </tables>
+    <columns>
+        <column name="groupname" var="groupname" notnull="notnull"/>
+		<column name="category" var="category" notnull="notnull"/>
+		<column name="phone" var="phone"/>
+		<column name="id" var="id" notnull="notnull"/>
+		<column name="regdate" var="regdate" />
+    </columns>
+</query>

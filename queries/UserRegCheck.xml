@@ -1,0 +1,12 @@
+<query id="UserRegCheck" action="select">
+    <tables>
+        <table name="hgucalendar_applicant" />
+    </tables>
+    <columns>
+        <column name="id" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="id" var="id"/>
+		<condition operation="equal" column="groupPermited" var="group" pipe="and" />
+    </conditions>
+</query>

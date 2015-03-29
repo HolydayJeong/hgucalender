@@ -1,0 +1,167 @@
+<style>
+	th
+	{
+		border:1px solid rgba(0, 0, 0, 0.1);
+		border-radius:30px;
+	}
+
+	.whole
+	{
+		box-shadow: 10px 10px 5px #888888;
+	}
+
+</style>
+<div class="whole">
+<form action="./" ruleset="eventRegRule" method="post">
+    <input type="hidden" name="document_srl"/>
+   <input type="hidden" name="content"/>
+   <input type="hidden" name="act" value="procHgucalendarEventReg">
+   <input type="hidden" name="start" value={$start}>
+   <input type="hidden" name="end" value={$end}>
+   <script>
+      //두 날짜 사이 계산.
+      sDate = new Date({$startY}, ({$startM}-1), {$startD});
+      eDate = new Date({$endY}, ({$endM}-1), {$endD});
+      date = Math.ceil((eDate.getTime() - sDate.getTime())/(1000*60*60*24));
+
+      // //두 날짜 사이 계산 
+      if(date>4){
+         alert('5일 이상 지정할수 없습니다. = '+({$endD}-{$startD}));
+         history.go(-1);
+      }
+      
+      (function($){
+	  $(document).ready(function(obj){
+		  nullck = ["#eventname","#place","#phone","#fare","runtime","#shour1_1","#sminute1_1","#shour2_1","#sminute2_1","#shour3_1","#sminute3_1","#shour4_1","#sminute4_1","#shour5_1","#sminute5_1"];
+		  nullck1 = ["제목을 입력해주세요.","장소를 입력해주세요.","연락처를 입력해주세요.", "가격을 입력해주세요.","런타임을 입력해주세요.","1일차 시간을 입력해주세요.","1일차 분을 입력해주세요.","2일차 시간을 입력해주세요.","2일차 분을 입력해주세요.","3일차 시간을 입력해주세요.","3일차 분을 입력해주세요.","4일차 시간을 입력해주세요.","4일차 분을 입력해주세요.","5일차 시간을 입력해주세요.","5일차 분을 입력해주세요." ];
+
+        $("#submit").click(function(){
+			if($("[name='perform']").checked){
+				if(!confirm('비공연이 맞습니까?'))
+					return false;
+			}
+			else{
+				if(!confirm('공연이 맞습니까?'))
+					return false;
+				else
+					$("[name='perform']").value(1);
+			}
+
+		    for(i=0; i<(5+date*2);i++){
+				if($(nullck[i]).val()==""){
+					alert(nullck1[i]);
+					$(nullck[i]).focus();
+					return false;
+				}
+			}
+
+			dayck = ['#time1_1','#time1_2','#time2_1','#time2_2','#time3_1','#time3_2', '#time4_1','#time4_2','#time5_1','#time5_2'];
+			for(i=0 ; i<date ; i++){
+				if($(dayck[i]).val() == ''){
+					alert($(dayck[i]).val());
+					alert((i+1)+'일차 오전, 오후 선택해주세요.');
+				}
+			}
+			
+			timeck= ["#shour1_1","#sminute1_1","#shour1_2","#sminute1_2","#shour2_1","#sminute2_1","#shour2_2","#sminute2_2","#shour3_1","#sminute3_1","#shour3_2","#sminute3_2","#shour4_1","#sminute4_1","#shour4_2","#sminute4_2","#shour5_1","#sminute5_1","#shour5_2","#sminute5_2"];
+
+			for(i=6; i<(6+date*2);i++){ // i=6인 이유 타임 관련이 6부터
+				if($(array[i]).val() > 12){
+					alert("시간을 입력이 잘못됬습니다.\n12시간제로 입력해주세요.");
+					$(array[i]).focus();
+					return false;
+				}
+			}
+
+			if(isNaN($('#fare').val())){
+				alert("가격은 숫자로 입력해주세요");
+				$('#fare').focus();
+				return false;
+			}
+
+			else if(isNaN($('#runtime').val())){
+				alert("런타임은 숫자로 입력해주세요");
+				$('#runtime').focus();
+				return false;
+			}
+
+			if(confirm('확실합니까?')){
+				$('#form').submit();
+			}
+			else 
+				return false;
+		});
+      
+        });
+      })(jQuery);
+      
+   </script>
+   <table width=80% border="0" align="center" cellpadding="5" cellspacing="0" summary="">
+
+     <tr>
+      <td colspan="3" align="center" style="font-family:맑은 고딕;font-size:30px;">일정 등록</td>
+     </tr>
+     <tr>
+      <td colspan="3" style="font-family:맑은 고딕;font-size:12px;">{$startY}-{$startM}-{$startD} ~ {$endY}-{$endM}-{$endD}</td>
+     </tr>
+       <tr>
+      	<td colspan="3" style="font-size:12px;">
+      		<input type="radio" name="perform" value="0" />비공연
+      		<input type="radio" name="perform" value="1" />공연
+      	</td>
+      </tr>
+      <tr>
+       <th align="center" width="20%" style="font-family:맑은 고딕;font-size:15px;">제 목</th>
+             <td colspan='2'><input type="text" name="eventname" id="eventname" value="{$eventinfo->eventname}" size=100%/></td>
+      </tr>
+      <tr>
+      <th align="center" width="20%" style="font-family:맑은 고딕;font-size:15px;">장 소</th>
+         <td colspan='2'><input type="text" name="place" id="place" value="{$eventinfo->place}" size=50%/></td>
+      </tr>
+
+      <tr>
+      <th align="center" width="20%" style="font-family:맑은 고딕;font-size:15px;">가 격</th>
+         <td colspan='2'><input type="text" name="fare" id="fare" value="{$eventinfo->fare}" size=30%/></td>
+      </tr>
+      
+      <tr>
+      <th align="center" width="20%" style="font-family:맑은 고딕;font-size:15px;">연락처</th>
+         <td colspan='2'><input type="text" name="phone" id="phone" value="{$eventinfo->phone}" size=50%/>'-'제외하고 입력하세요.</td>
+      </tr>
+   
+     <script>
+		date++;
+      for (i=0;i<date;i++)
+      {
+         with(document)
+         {
+            write('<tr><th scope="row">');
+            write((i+1)+'일차 시간</th>');
+            write('<td align="center">1 : <select name="time'+(i+1)+'_1"><option value="">선택</option><option value="오전">오전</option><option value="오후">오후</option><input type="text" id="shour'+(i+1)+'_1" size="2"/>시<input type="text" id="sminute'+(i+1)+'_1" size="2"/>분</td><td align="center">2 :   <select id="time'+(i+1)+'_2" ><option value="">선택</option><option value="오전">오전</option><option value="오후">오후</option><input type="text" id="shour'+(i+1)+'_2" size="2"/>시<input type="text" id="sminute'+(i+1)+'_2" size="2"/>분</td></tr>');
+         }
+
+      }
+   </script>
+   
+   <tr>
+      <th align="center" width="20%" style="font-family:맑은 고딕;font-size:15px;">런타임</th>
+         <td colspan='2'><input type="text" name="runtime" id="runtime" value="{$eventinfo->runtime}" size=80%/>분 (ex. 120분)</td>
+      </tr>
+      
+     <tr>
+        <td colspan="3">    
+          {$oDocument->getEditor()} <!--내용물 출력하는거 연구해보자-->
+         </td>
+          </tr>
+          </table>
+     <div class="tag fileLink">
+                <input type="hidden" name="editor_sequence_srl" value="5"  class="exISt" />
+        </div>
+
+      <div align="center" height=30px>
+         <span class="button"><input type="submit" id="submit" value="등록" accesskey="s"/></span>
+         <span class="button"><input type="reset" id="close" value="취소"/></span>
+      </div>
+	  <br><br>
+	</div>
+ </form>

@@ -1,0 +1,77 @@
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<form action="./" method="post" id="form">
+	<input type="hidden" name="act" value="procHgucalendarGoupPermit">
+	<input type="hidden" id="groupname" name="groupname" value="test">
+	<input type="hidden" id="command" name="command" value="0">
+<table align='center' border='1' size=100%>
+	<tr align="center">
+		<td size=10%>단체</td>
+		<td size=10%>단체분류</td>
+		<td size=30%>아이디</td>
+		<td size=30%>등록일자</td>
+		<td>허락여부</td>
+		<td>허락</td>
+	<tr>
+
+<script>
+//function permit(i) {
+//	alert(i);
+//}
+
+(function($) {
+	$(document).ready(function() {
+		$('.ahref').click(function (){
+			$('#groupname').val(groupname);
+			$('#form').submit();
+		})
+
+		$.permit = function(groupname){
+			if(confirm('허락하시겠습니까?')){
+				$('#groupname').val(groupname);
+				$('#command').val('1'); // 1: 부여, 2: 박탈
+				$('#form').submit();
+			}
+		}
+
+		$.cancel = function(groupname){
+			if(confirm('박탈하시겠습니까?')){
+				$('#groupname').val(groupname);
+				$('#command').val('2'); // 1: 부여, 2: 박탈
+				$('#form').submit();
+			}
+		}
+
+	});
+})(jQuery);
+
+	
+with(document){
+	<!--@foreach($member as $no)-->
+	if({$no->isManager}){
+	write('<tr align="center">');
+	write('<td>{$no->groupname}</td><td>{$no->category}</td><td>{$no->id}</td><td>{$no->regdate}</td><td>Manager</td>');
+	write('</tr>');
+	}
+	<!--@end-->
+
+	<!--@foreach($member as $no)-->
+	if(!{$no->isManager} && {$no->groupPermited}){
+	write('<tr align="center">');
+	write('<td>{$no->groupname}</td><td>{$no->category}</td><td>{$no->id}</td><td>{$no->regdate}</td><td>Yes</td><td><a href="#" onclick=$.cancel("{$no->groupname}")  name="groupname" value="{$no->groupname}">취소</a></td>');
+	write('</tr>');
+	}
+	<!--@end-->
+	
+	<!--@foreach($member as $no)-->
+	if(!{$no->groupPermited}){
+		groupname = '{$no->groupname}';
+		write('<tr align="center">');
+		write('<td>{$no->groupname}</td><td>{$no->category}</td><td>{$no->id}</td><td>{$no->regdate}</td><td>No</td><td><a href="#" onclick=$.permit("{$no->groupname}")  name="groupname" value="{$no->groupname}">허락</a></td>');
+		write('</tr>');
+	}
+	<!--@end-->
+}
+</script>
+</form>
+</table>

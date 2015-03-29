@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table name = "hgucalendar_seat">
+	<column name="event_srl" type="number" size="20" notnull="notnull" auto_increment="auto_increment" index="idx_list_order" />
+	<column name="id" type="varchar" size="20" notnull="notnull" />
+	<column name="name" type="varchar" size="20" notnull="notnull" />
+	<column name="seat" type="varchar" size="7" notnull="notnull" />
+	<column name="regdate" type="date" notnull="notnull" />
+	<column name="regtime" type="varchar" size="7" notnull="notnull" />
+	<column name="confirm" type="number" size="1" default="0" notnull="notnull" />
+	</table>    

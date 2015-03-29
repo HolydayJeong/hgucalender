@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table name = "hgucalendar_event">
+	<column name="event_srl" type="number" size="20" notnull="notnull" auto_increment="auto_increment"  primary_key="primary_key"/>
+	<column name="event_seq" type="number" size="20" notnull="notnull" /> <!--각 공연당 부여하는 번호 documnet_srl로 함 -->
+	<column name="perform" type="number" size="1" notnull="notnull"/>
+    <column name="eventname" type="varchar" size="30" notnull="notnull"/>
+	<column name="place" type="varchar" size="20" notnull="notnull"/>
+    <column name="id" type="varchar" size="40" notnull="notnull"/>
+	<column name="phone" type="number" size="11" notnull="notnull"/>
+	<column name="fare" type="number" size="7"/>
+	<column name="runtime" type="number" size="3" />
+	<column name="document_srl" type="varchar" size="10" notnull="notnull"/>
+	<column name="startdate" type="varchar" size="10" notnull="notnull" />
+	<column name="enddate" type="varchar" size="10" notnull="notnull" />
+	<column name="starttime" type="varchar" size="5"/>
+    <column name="regdate" type="date" default="
+	curdate();" notnull="notnull" />
+</table>    

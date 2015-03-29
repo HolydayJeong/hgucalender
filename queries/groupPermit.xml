@@ -1,0 +1,11 @@
+<query id="groupPermit" action="update">
+    <tables>
+        <table name="hgucalendar_applicant" />
+    </tables>
+    <columns>
+        <column name="groupPermited" var="groupPermited" default="1" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="groupname" var="groupname" />
+    </conditions>
+</query>

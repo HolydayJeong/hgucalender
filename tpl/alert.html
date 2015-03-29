@@ -1,0 +1,12 @@
+<head>
+</head>
+<script>
+	alert("{$alertinfo->message}");
+	if("{$alertinfo->url}" == "history.go(-1)")
+		history.go(-1);
+	else if("{$alertinfo->url}" == "history.go(-3)")
+		history.go(-3);
+	else if("{$alertinfo->url}" != "")
+		location.href = "{$alertinfo->url}";
+	
+</script>

@@ -1,0 +1,12 @@
+<query id="getUnconfirmed" action="select">
+    <tables>
+        <table name="seat" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="event_srl" var="event_srl" notnull="notnull" pipe="and" />
+		<condition operation="equal" column="confirm" var="confirm" notnull="notnull" default="0" pipe="and" />
+	</conditions>
+</query>

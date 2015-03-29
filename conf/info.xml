@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+    <title xml:lang="ko">한동 문화 달력</title>
+    <title xml:lang="en">Handong Culture Calendar</title>
+    <description xml:lang="ko">한동 문화달력입니다.</description>
+    <description xml:lang="en">This is Handong Culture Calendar</description>
+    <version>0.1</version>
+    <date>2013-01-09</date>
+    <category>service</category>
+
+    <author email_address="developers@developers.com" link="http://developers.com/">
+        <name xml:lang="ko">CRA(09배성대 09정성일 13한소현)</name>
+        <name xml:lang="en">CRA(09배성대 09정성일 13한소현)</name>
+    </author>
+</module>

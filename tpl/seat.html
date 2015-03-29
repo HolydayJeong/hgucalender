@@ -1,0 +1,159 @@
+<html>
+   <head>
+   <style>
+      .stage
+      {
+         border: 1px solid black;
+         text-align: center;
+         margin: 100px;
+         width: 65%;
+         height: 35%;
+         background-color: green; 
+         font-size: 13px;
+      }
+      table
+      {
+         margin:auto;
+         margin-top: 15px;
+      }   
+      tr,td
+      {          
+         border: 1px solid black;
+         /*margin:auto;*/
+         text-align: center;
+         margin-top: 10px;
+      }
+      
+      .blank
+      {
+         opacity:0;
+         
+      }
+		.Reserved
+		{
+			opacity:0.3;
+			background-color : gray;
+	    }
+		.seat
+	    {;}
+		.userRequest
+		{
+			background-color: rgba(0, 255, 255, 1);
+		}
+		.confirmed
+		{
+			background-color: yellow;
+		}
+      
+   </style>
+   </head>
+   <body>
+   <form action="./" method="post" id="form">
+		<input type="hidden" name="act" value="procHgucalendarSeatReserve">
+		<input type="hidden" name="id" value="{$logged_info->user_id}">
+		<input type="hidden" name="name" value="{$logged_info->user_name}">
+		<input type='hidden' id='seat' name='seat' value="">
+		<input type='hidden' id='event_srl' name='event_srl' value="">
+		<input type='hidden' id='date' name='regdate' value="">
+		<input type='hidden' id='time' name='regtime' value="">
+	</form>
+	
+		
+   <script src="http://code.jquery.com/jquery-latest.js"></script>      
+   <script type="text/javascript">
+
+    /// 날짜 함수 ///
+    var now = new Date();
+	var year = now.getYear() +1900;
+	var month = now.getMonth()+1;   
+	var today = now.getDate();
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+	/// 날짜함수 끝 ///
+
+    /// event_srl 따오기 ///
+	url = location.href;
+	urlIndex = url.indexOf("?");
+	url = url.substring(urlIndex+1);
+	urlList = url.split("&");
+	event_srl = urlList[2];
+	event_srl = event_srl.substring(10);
+	/// event_srl 따오기 끝 ///
+	
+   function reserve(n){
+         if(confirm(n+"번 좌석을 예약하시겠습니까?\n 주의!! 한번 예약하면 취소할수 없습니다")){
+			$('#event_srl').val(event_srl);
+			$('#seat').val(n);
+			$('#date').val(year+"-"+month+"-"+today);
+			$('#time').val(hour+":"+minute);
+			$('#form').submit();
+          }
+   }   
+          
+	n=1;
+   with(document)
+   {
+	  write("<br><table class='stage' >무대</table>");
+	  write("<table border=1><tr><td class='Reserved' width= 30px/><td>타인예약</td><td class='userRequest' width= 30px/><td>본인예약요청중</td><td class='confirmed' width= 30px/><td>본인예약됨</td></tr></table><br><br>");
+	  for(a=0; a<10; a++)   //처음 10줄   
+	  {        
+		write("<table border= '0' ><tr>  ");
+		for(b=0; b<6; b++)
+		{
+		  write("<td class='seat' name='seat"+n+"' value ='"+n+"' width = 40px  ><a href='#' onclick='reserve("+n+")'/>"+n+"</td>");
+		  n++;
+		}      //왼쪽 좌석
+		write("<td class= 'blank' width= '160'></td>");   //비어있는 척
+		
+		for(c=0; c<6; c++)
+		{
+		 write("<td class='seat'name='seat"+n+"' value ='"+n+"' width = 40px><a href='#' onclick='reserve("+n+")'/>"+n+"</td>");
+		 n++;
+		}      //오른쪽 좌석
+		write("</tr></table>");   
+	  }
+
+	  write("<table border='0'><tr>");      //마지막 table row.
+	   write("<td class='blank' width='80px'></td>");
+	  for(d=0; d<3; d++)
+		{
+		   write("<td class='seat' name='seat"+n+"' value ='"+n+"' width = 40px><a href='#' onclick='reserve("+n+")' />"+n+"</td>");
+		   n++;
+		  }
+		write("<td class='blank' width= '260px'></td>");
+	  for(e=0; e<3; e++) 
+		  {
+			 write("<td class=' seat'name='seat"+n+"' value ='"+n+"' width = '40px'><a href='#'   onclick='reserve("+n+")' />"+n+"</td>");
+			 n++;
+		  } 
+		write("<td class='blank' width='80px'></td>");
+		write("</tr></table>");   
+		
+
+		<!--@foreach($seat as $no => $val)-->
+			if('{$val->id}' == '{$logged_info->user_id}'){
+					if('{$val->confirm}' == '1'){ // 확정된경우
+						$("td[name='seat{$val->seat}'] > a").removeAttr("onclick").removeAttr("href"); // seat i에 붙어있는 a의 속성을 바꿔라.
+						$("td[name='seat{$val->seat}']").removeClass("seat").addClass("confirmed");
+					}
+					else{
+						$("td[name='seat{$val->seat}'] > a").removeAttr("onclick").removeAttr("href"); // seat i에 붙어있는 a의 속성을 바꿔라.
+						$("td[name='seat{$val->seat}']").removeClass("seat").addClass("userRequest");
+					}
+			}
+
+			else{
+				$("td[name='seat{$val->seat}'] > a").removeAttr("onclick").removeAttr("href"); // seat i에 붙어있는 a의 속성을 바꿔라.
+				$("td[name='seat{$val->seat}']").removeClass("seat").addClass("Reserved");
+				
+			}
+		 <!--@end-->
+	}
+
+	if('{$Reserved}' == 'true'){
+			var Deadline = month+"월 "+(today+1)+"일 "+hour+" 시 까지 입장료를 내 주세요";
+			alert('예약되었습니다. \n'+Deadline);
+	}
+   </script>
+</body>
+</html>   

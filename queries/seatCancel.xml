@@ -1,0 +1,13 @@
+<query id="seatCancel" action="delete">
+    <tables>
+        <table name="hgucalendar_seat" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="event_srl" var="event_srl" />
+		<condition operation="equal" column="id" var="id" pipe="and"/>
+		<condition operation="equal" column="seat" var="seat" pipe="and"/>
+    </conditions>
+</query>

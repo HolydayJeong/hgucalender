@@ -1,0 +1,10 @@
+<query id="getEvents" action="select">
+    <tables>
+        <table name="hgucalendar_event" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+	<conditions>
+	</conditions>
+</query>

@@ -1,0 +1,20 @@
+<query id="eventReg" action="insert">
+    <tables>
+        <table name="hgucalendar_event" />
+    </tables>
+    <columns>
+		<column name="eventname" var="eventname" notnull="notnull"/>
+		<column name="event_seq" var="event_seq" notnull="notnull"/>
+		<column name="perform" var="perform" notnull="notnull" />
+		<column name="place" var="place" notnull="notnull"/>
+		<column name="id" var="id" notnull="notnull" />
+		<column name="phone" var="phone"/>
+		<column name="fare" var="fare"/>
+		<column name="runtime" var="runtime"/>
+		<column name="document_srl" var="document_srl"/>
+		<column name="startdate" var="start" notnull="notnull"/>
+        <column name="enddate" var="end" notnull="notnull"/>
+		<column name="starttime" var="starttime"/>
+		<column name="regdate" var="regdate" notnull="notnull"/>
+    </columns>
+</query>

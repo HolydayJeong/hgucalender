@@ -1,0 +1,10 @@
+<query id="groupApply" action="select">
+    <tables>
+        <table name="hgucalendar_applicant" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+    </conditions>
+</query>

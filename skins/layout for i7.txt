@@ -1,0 +1,135 @@
+<!--%import("js/menu.js")-->
+{@ $today = date(w);}
+<!--@if($today == 1)-->
+	<!--%import("css/black.css")-->	
+<!--@end-->
+<!--@if($today == 2)-->
+	<!--%import("css/green.css")-->	
+<!--@end-->
+<!--@if($today == 3)-->
+	<!--%import("css/green.css")-->	
+<!--@end-->
+<!--@if($today == 4)-->
+	<!--%import("css/sky.css")-->	
+<!--@end-->
+<!--@if($today == 5)-->
+	<!--%import("css/blue.css")-->	
+<!--@end-->
+<!--@if($today == 6)-->
+	<!--%import("css/violet.css")-->	
+<!--@end-->
+<!--@if($today == 0)-->
+	<!--%import("css/red.css")-->	
+<!--@end-->
+
+<!--@if($logged_info)-->
+	<!--@if(!$layout_info->colorset)-->
+	{@$layout_info->colorset = "default"}
+	<!--@end-->
+
+	<div id="bodyWrap">
+
+	<div id="header">
+<img class="zbxe_widget_output" widget="wnotifycra" skin="default" colorset="default" list_count="5" />
+	<div id="logo"><!--@if($layout_info->logo_image)--><a href="{$layout_info->index_url}"><img src="{$layout_info->logo_image}" alt="logo" border="0" class="iePngFix" style="z-index:0"/></a><!--@else-->&nbsp;<!--@end--></div>
+		<!--//즐겨찾기 추가 나중에 추가하기
+		<div id="favor">
+			<a href="javascript:bookmark()"><img src="./images/favor.gif" /></a>
+		</div>
+		-->
+		
+
+		<div id="log">
+
+			<!--@if($logged_info)-->
+			<a href="{$layout_info->index_url}"><img src="./images/home.gif" /></a>
+			<a href="{$layout_info->index_url}?act=dispMemberInfo"><img src="./images/modify.gif" /></a>
+			<a href="{$layout_info->index_url}?act=dispMemberLogout"><img src="./images/logout.gif" /></a>
+			<!--@else-->
+			<a href="/xe/"><img src="./images/home.gif" /></a>
+			<!--@end-->
+		</div>
+
+	<div id="mainMenu_line">
+	<table class="tMenu" border="0" cellspacing="0" cellpadding="0"><tr>
+	<td class="td3">
+
+	   <div id="mainMenu">
+			<!--@foreach($main_menu->list as $key => $val)--><!--@if($val['link'])--> {@ $menu_1 = $val } 
+			<div class="Mmenu">
+			  <li <!--@if($val['selected'])--> class="on" <!--@end-->>
+			  <a href="{$val['href']}" <!--@if($menu_1['list'])--> onmouseover="show('menu_{$mn1}');" onmouseout="hide('menu_{$mn1}');" <!--@end--> 
+			  <!--@if($val['open_window']=='Y')-->onclick="window.open(this.href);return false;"<!--@end-->>{$val['link']}</a></li>
+			<table id="menu_{$mn1}" onmouseover="show('menu_{$mn1}');" onmouseout="hide('menu_{$mn1}');"><tr><td>
+			  <!--@foreach($menu_1['list'] as $key => $val)--><!--@if($val['link'])--> {@ $menu_2 = $val} 
+			  <a href="{$val['href']}" <!--@if($menu_2['list'])--> onmouseover="show('menu2_{$mn2}')" onmouseout="hide('menu2_{$mn2}');" <!--@end--> 
+			  <!--@if($val['open_window']=='Y')--> onclick="window.open(this.href);return false;" <!--@end-->>{$val['link']}
+			  <!--@if($menu_2['list'])--><img src="./images/{$layout_info->colorset}/arrow.gif" class="arrow" /></a>
+			<div class="Smenu">
+			  <table id="menu2_{$mn2}" onmouseover="show('menu2_{$mn2}');" onmouseout="hide('menu2_{$mn2}');"><tr><td>
+			  <!--@foreach($menu_2['list'] as $key => $val)--><!--@if($val['link'])--> {@ $menu_3 = $val} 
+			  <a href="{$val['href']}" <!--@if($menu_3['list'])--> onmouseover="show('menu3_{$mn3}');" onmouseout="hide('menu3_{$mn3}');" <!--@end-->
+			  <!--@if($val['open_window']=='Y')--> onclick="window.open(this.href);return false;" <!--@end-->>{$val['link']}
+			  <!--@if($menu_3['list'])--><img src="./images/{$layout_info->colorset}/arrow.gif" class="arrow" /></a>
+			<div class="Smenu">
+			  <table id="menu3_{$mn3}" onmouseover="show('menu3_{$mn3}');" onmouseout="hide('menu3_{$mn3}');"><tr><td>
+			  <!--@foreach($menu_3['list'] as $key => $val)--><!--@if($val['link'])--> {@ $menu_4 = $val} 
+			  <a href="{$val['href']}" <!--@if($menu_4['list'])--> onmouseover="show('menu4_{$mn4}');" onmouseout="hide('menu4_{$mn4}');" <!--@end--> 
+			  <!--@if($val['open_window']=='Y')-->onclick="window.open(this.href);return false;"<!--@end-->>{$val['link']}</a>
+			  {@$mn4++} <!--@end--><!--@end--></td></tr></table></div>
+				<!--@else--></a><!--@end-->
+				{@$mn3++} <!--@end--><!--@end--></td></tr></table></div>
+				<!--@else--></a><!--@end-->
+				{@$mn2++} <!--@end--><!--@end--></td></tr></table></div>
+			  {@$mn1++} <!--@end--><!--@end--></div>&nbsp;</td></tr></table>
+	</div>
+
+			<form action="{getUrl()}" method="post" id="isSearch">
+
+				<!--@if($vid)-->
+				<input type="hidden" name="vid" value="{$vid}" />
+				<!--@end-->
+				<input type="hidden" name="mid" value="{$mid}" />
+				<input type="hidden" name="act" value="IS" />
+				<input type="hidden" name="search_target" value="title_content" />
+
+				<input name="is_keyword" type="text" class="inputText" title="keyword" />
+				<!--@if($layout_info->color == "green")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_green.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@elseif($layout_info->color == "blue")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_blue.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@elseif($layout_info->color == "black")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_black.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@elseif($layout_info->color == "violet")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_violet.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@elseif($layout_info->color == "sky")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_sky.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@elseif($layout_info->color == "red")-->
+				<input type="image" src="./images/{$layout_info->colorset}/buttonSearch_red.gif" alt="{$lang->cmd_search}" class="submit" />
+				<!--@end-->
+			</form>
+
+	</div>
+
+		<div id="contentBody">
+				{$content}
+		</div>
+
+		<ul id="footer">
+			<!--@foreach($bottom_menu->list as $key => $val)-->
+			<li><a href="{$val['href']}" <!--@if($val['open_window']=='Y')-->onclick="window.open(this.href);return false;"<!--@end-->>{$val['link']}</a></li>
+			<!--@endforeach-->
+		</ul>
+		
+		<div id="copy">
+			{$layout_info->copy_text}
+		</div>
+
+	</div>
+
+	<style type="text/css">
+		#logo { top:{$layout_info->logo_margin}px;}
+	</style>
+<!--@else-->
+	<!--#include("login.html")-->
+<!--@end-->

@@ -1,0 +1,13 @@
+<query id="seatPermit" action="update">
+    <tables>
+        <table name="hgucalendar_seat" />
+    </tables>
+    <columns>
+        <column name="confirm" var="confirm" default="1" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="event_srl" var="event_srl" pipe="and"/>
+		<condition operation="equal" column="id" var="id" pipe="and" />
+		<condition operation="equal" column="seat" var="seat" pipe="and" />
+    </conditions>
+</query>

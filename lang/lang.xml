@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="hello_world">
+		<value xml:lang="ko"><![CDATA[안녕하세요, 세상아?]]></value>
+		<value xml:lang="en"><![CDATA[Hello world?]]></value>
+	</item>
+</lang>

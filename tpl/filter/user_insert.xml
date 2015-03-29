@@ -1,0 +1,10 @@
+<filter name="user_insert" module="hgucalender" act="procHgucalendarUserWrite" confirm_msg_code="confirm_submit">
+  <form>
+    <node target="groupname" required="true" maxlength="40" filter="korean_alpha_number" />
+    <node target="phone" required="true" maxlength="40" />
+    <node target="id" required="true" maxlength="11"/>
+  </form>
+  <parameter />
+  <response>
+  </response>
+</filter>

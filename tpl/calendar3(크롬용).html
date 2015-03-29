@@ -1,0 +1,429 @@
+<head>
+</head>
+<load target="css/fullcalendar.css"/>
+<load target="css/fullcalendar.print.css"/>
+<load target="js/fullcalendar.min.js"/>
+<script>
+
+function register()
+{
+	var url = "modules/hgucalendar/tpl/register.html";
+	var option = "width=500px, height=500px, resizable=yes, scrollbars=no, status=no;'";
+	window.open(url,'',option);
+	
+	//current_url.setQuery('act','dispBookAdminList').setQuery('module_srl','');
+	//if(page) url = url.setQuery('page',page);
+	//location.href = url;
+}
+
+function event_reg(start, end)
+{
+	<!--@if($is_logged)-->
+		// 형식을 0000-00-00 으로 만들기
+		if(start.getMonth()<9){
+			if(start.getDate()<9){
+				start = start.getFullYear()+"_0"+(start.getMonth()+1)+"_0"+start.getDate();
+			}
+			else
+				start = start.getFullYear()+"_0"+(start.getMonth()+1)+"_"+start.getDate();
+		}
+		else if(start.getDate()<9){
+			start = start.getFullYear()+"_"+(start.getMonth()+1)+"_0"+start.getDate();
+		}
+		else
+			start = start.getFullYear()+"_"+(start.getMonth()+1)+"_"+start.getDate();
+		
+		if(end.getMonth()<9){
+			if(end.getDate()<9){
+				end = end.getFullYear()+"_0"+(end.getMonth()+1)+"_0"+end.getDate();
+			}
+			else
+				end = end.getFullYear()+"_0"+(end.getMonth()+1)+"_"+end.getDate();
+		}
+		else if(end.getDate()<9){
+			end = end.getFullYear()+"_"+(end.getMonth()+1)+"_0"+end.getDate();
+		}
+		else
+			end = end.getFullYear()+"_"+(end.getMonth()+1)+"_"+end.getDate();
+
+		//location.href="{getUrl('act','dispHgucalendarContentRegist')}";//,'start','"+start+"', 'end','"+end+"')}";
+		location.href="./index.php?mid={$module_info->mid}&act=dispHgucalendarContentRegist&start="+start+"&end="+end;
+	
+	<!--@else-->
+		alert('로그인을 해주세요');
+	<!--@end-->
+}
+
+(function($){
+
+	//function callback_event(ret_obj, responses, params, form_object) {
+	//	console.log(ret_obj);
+//여기만 조금 건들면 됨_성일오빠가하기!!!!!!!!!!!어딘지못찾겠음!
+
+	//	$( "#place" ).html(ret_obj["place"]);
+
+	//	$( "#dialog-form_2" ).dialog( "open" );
+	//} // 모달팝업 뷰. 추후 구현 예정.
+
+	$(document).ready(function() {
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		var calendar = $('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title', 
+				right: 'month,agendaWeek,agendaDay'
+			},
+			selectable: true,
+			selectHelper: true,
+			select: function(start, end, allDay) {
+				//alert(start+" / "+end);
+				if(confirm('일정을 등록하시겠습니까?') == true)
+					event_reg(start, end);
+				
+				else if (title) {
+					calendar.fullCalendar('renderEvent',
+						{
+							title: title,
+							start: start,
+							end: end,
+							allDay: allDay
+						},
+						true // make the event "stick"
+					);
+				}
+				calendar.fullCalendar('unselect');
+			},
+			/*eventClick: function(document_srl, jsEvent, view) {
+
+				document_srl.document_srl;
+
+				var params={
+					document_srl:"아아아아아",
+					
+					};
+				var responses=["eventinfo"];
+				var form_object={};
+
+				exec_xml('hgucalendar', 'procHgucalendarEventInfo', params, callback_event, responses, params, form_object);
+
+				
+
+			},*/ // 모달팝업 뷰. 추후 구현 예정.
+
+			editable: false,
+			events: [
+			
+				{
+					title: 'Click for Google',
+					start: new Date('2014-4-10 9:00'),
+					end: new Date('2014-4-10 11:00'),
+					allDay:false
+				},/*
+				{
+					title: '바람과 함께 사라지다',
+					start: new Date(y, m, 28, 10, 30),
+					end: new Date(y, m, 28, 11, 40),
+					url: 'http://www.google.co.kr',
+					allDay: false
+				},
+				{
+					title: '소소한 일상',
+					start: new Date(y, m, 28, 12, 30),
+					end: new Date(y, m, 28, 13, 40),
+					url: 'http://www.google.co.kr',
+					allDay: false
+				},
+				*/
+				{
+					title: '레미제라블',
+					start: new Date(y, m, 29, 10, 30),
+					end: new Date(y, m, 29, 11, 40),
+					url: 'http://www.google.co.kr',
+					allDay: false
+				}
+			]
+			
+		});
+		$(".fc-button-next").click(function(){
+			$.eventadd();
+		}); // 다음달의 이벤트 등록
+		$(".fc-button-prev").click(function(){
+			$.eventadd();
+		}); // 전달의 이벤트 등록
+
+		
+	$.eventadd = function(){
+		//이벤트 추가하기.
+		<!--@foreach($eventinfo as $no => $event)-->
+		date_mod = '{$event->startdate}';
+		date_mod = date_mod.replace('_', "-");
+		date_mod = date_mod.replace('_', "-"); // IE에서는 한번밖에 안멱혀서..
+		edate = new Date(date_mod);
+		date_mod = date_mod.substr(0,8); // 연,월까지만 자르기(일은다르게)
+		eday = edate.getDate();			// 일만 표기
+
+		
+
+		stime1_1 = '{$event->stime1_1}';
+		stime1_1 = date_mod+eday+' '+stime1_1.substr(0,5);
+		console.log(stime1_1);
+		calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime1_1), url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+		//console.log('1-2 : {$event->stime1_2}');
+		<!--@if($event->stime1_2 != '')-->                   
+		stime1_2 = '{$event->stime1_2}';
+		stime1_2 = date_mod+eday+' '+stime1_2.substr(0,5);
+		calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime1_2), url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+		<!--@end-->
+
+		<!--@if($event->stime2_1 != '')-->
+		stime2_1 = '{$event->stime2_1}';
+		stime2_1 = date_mod+(eday+1)+' '+stime2_1.substr(0,5);
+		calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime2_1),
+		url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+			<!--@if($event->stime2_2 != '')-->
+			stime2_2 = '{$event->stime2_2}';
+			stime2_2 = date_mod+(eday+1)+' '+stime2_2.substr(0,5);
+			calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime2_2), url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+			<!--@end-->
+
+			<!--@if($event->stime3_1 != '')-->
+			stime3_1 = '{$event->stime3_1}';
+			stime3_1 = date_mod+(eday+2)+' '+stime3_1.substr(0,5);
+			calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime3_1), url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+				<!--@if($event->stime3_2 != '')-->
+				stime3_2 = '{$event->stime3_2}';
+				stime3_2 = date_mod+(eday+2)+' '+stime3_2.substr(0,5);
+				calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", start: new Date(stime3_2), allDay:false});
+				<!--@end-->
+
+				<!--@if($event->stime4_1 != '')-->
+				stime4_1 = '{$event->stime4_1}';
+				stime4_1 = date_mod+(eday+3)+' '+stime4_1.substr(0,5);
+				console.log(stime4_1);
+				calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', start: new Date(stime4_1), url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", allDay:false});
+					<!--@if($event->stime4_2 != '')-->
+					stime4_2 = '{$event->stime4_2}';
+					stime4_2 = date_mod+(eday+3)+' '+stime4_2.substr(0,5);
+					calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", start: new Date(stime4_2), allDay:false});
+					<!--@end-->
+
+					<!--@if($event->stime5_1 != '')-->
+					stime5_1 = '{$event->stime5_1}';
+					stime5_1 = date_mod+(eday+4)+' '+stime5_1.substr(0,5);
+					calendar.fullCalendar('renderEvent',{title: '{$event->eventname}', url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", start: new Date(stime5_1), allDay:false});
+						<!--@if($event->stime5_2 != '')-->
+						stime5_2 = '{$event->stime5_2}';
+						stime5_2 = date_mod+(eday+4)+' '+stime5_2.substr(0,5);
+						calendar.fullCalendar('renderEvent',{title: '{$event->eventname}',url:"./index.php?mid={$module_info->mid}&act=dispHgucalendarEventView&document_srl={$event->document_srl}", start: new Date(stime5_2), allDay:false});
+						<!--@end-->
+					<!--@end-->
+				<!--@end-->
+			<!--@end-->
+		<!--@end-->
+
+		<!--@end-->
+	}
+		$.eventadd();
+		
+		<!--@foreach($manager as $no)-->
+		if('{$no->id}' == '{$logged_info->user_id}'){
+		$('.fc-header-right').append('<span class="fc-button  fc-state-default fc-corner-left fc-corner-right" id="groupmanager">단체관리</span>');
+		}
+		<!--@end-->
+
+		$('.fc-header-right').append('<span class="fc-button  fc-state-default fc-corner-left fc-corner-right" id="groupreg">단체등록</span>');
+
+		$('#groupreg').button().click(function(){
+			 $( "#dialog-form" ).dialog( "open" );
+		});
+		
+		$('#groupmanager').button().click(function(){
+			 location.href="./index.php?mid={$module_info->mid}&act=dispHgucalendarGroupManager";
+		});
+		
+
+		$( "#dialog-form" ).dialog({
+		      autoOpen: false,
+		      height: 270,
+		      width: 500,
+		      modal: true
+		});
+
+		/*$( "#dialog-form_2" ).dialog({
+		      autoOpen: false,
+		      height: 400,
+		      width: 650,
+		      modal: true
+		});*/ //모달팝업 뷰. 추후 구현 예정.
+		
+		$("#submit").click(function(){
+			if($('#writer').val()==""){
+				alert("작성자를 입력해 주세요.");
+				$('#writer').focus();
+				return false;
+			}
+			if($('#association').val()==""){
+				alert("단체명을 입력해 주세요.");
+				$('#association').focus();
+				return false;
+			}
+			if($('#field').val()==""){
+				alert("분야를 선택해 주세요.");
+				$('#field').focus();
+				return false;
+			}
+			$('#form').submit();
+		});
+
+		$("#close").click(function(){
+			$( "#dialog-form" ).dialog( "close" );
+			return false;
+		});
+	});
+})(jQuery);
+
+</script>
+<style>
+
+	body {
+		margin-top: 40px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		}
+
+	#calendar {
+		width: 900px;
+		margin: 0 auto;
+		}
+
+</style>
+<div id='calendar'></div>
+
+<!-- 생성 -->
+<!--<a href="{getUrl('act','dispHgucalendarContentRegist')}">일정등록</a> -->
+
+<div id="dialog-form">
+ 	<style type="text/css">
+		a1{
+		font-size:20px;
+		color:black;
+		font-weight:bold;
+		}
+		a2{
+		font-size:15px;
+		color:black;
+		}
+		
+	</style>
+ <form action="./" method="post">
+	<input type="hidden" name="act" value="procHgucalendarUserReg">
+	<table width="450" border="0" align="center" cellpadding="5" cellspacing="7" style="border:0px #3333333 solid;border-top-width:3px;">
+	  <tr>
+	   <td colspan="2" align="center"><a1>단체 등록</a1></td>
+	  </tr>	
+	   <tr>
+		<td colspan="2" align="center"><a3>자세히 입력해 주세요.</a3></td>
+	   </tr>	 
+	   <tr>
+		<td align="center"><a2>작성자</a2></td>
+		<td>{$logged_info->user_id}</td>
+	   </tr>
+	   <tr>
+		<td align="center"><a2>단체명</a2></td>
+		<td>
+		 <input type="text" name="groupname" id="association" size="20">
+		</td>
+	   </tr>
+	   <tr>
+		<td align="center"><a2>단체분류</a2></td>
+		<td>
+		<select name="category" class="field">
+		<option value=""><a2>선택</a2></option>
+		<option value="동아리 행사"><a2>동아리</a2></option>
+		<option value="외부 행사"><a2>학회</a2></option>
+		<option value="내부 행사"><a2>학교단체</a2></option>
+		</td>
+	   </tr>	 
+	   <tr>
+		<td colspan="2" align="center" font-size="10px">
+		<input type="submit" id="submit" value="등록">
+		<input type="reset" id="close" value="취소">
+		</td>
+	   </tr>
+	  </table>
+	</form>
+</div>
+<!--
+<div id="dialog-form_2">
+<form>
+	
+	<style>
+		table.ex {width:100%; margin:0 auto; align:center; border-collapse:collapse}
+		.ex th, .ex td {padding:5px 10px}
+		.ex caption {font-weight:700; font-size:20px; padding:5px; text-align:center; margin-bottom:5px}
+		.ex tbody th {text-align:center; width:12%}
+		.ex tbody td.content {text-align:center; width:40%}
+		.ex tbody tr.odd {background:#f9f9f9}
+		.ex tbody tr.odd th {background:#f2f2f2}
+	</style>
+
+	<table class="ex">
+		<caption>일 정</caption>
+		
+		<tbody>
+		<tr class="odd">
+			<th scope="row">시작일자</th>
+				<td class="content" colspan='2' id="startdate"></td>
+		</tr>
+
+		<tr>
+			<th scope="row">마감일자</th>
+				<td class="content" colspan='2' id="enddate"></td>
+		</tr>
+
+		<tr class="odd">
+			<th scope="row">제 목</th>
+				<td class="content" colspan='2' id="eventname"></td>
+		</tr>
+
+		<tr>
+			<th scope="row">주 최</th>
+				<td class="content" colspan='2'></td>
+		</tr>
+      
+		<tr class="odd">
+			<th scope="row">장 소</th>
+				<td class="content" colspan='2' id="place"></td>
+		</tr>
+
+		<tr>
+			<th scope="row">가 격</th>
+				<td class="content" colspan='2' id="fare"></td>
+		</tr>
+      
+		<tr class="odd">
+			<th scope="row">연락처</th>
+				<td class="content" colspan='2' id="phone"></td>
+		</tr>
+  
+		<tr>
+			<th scope="row">런타임</th>
+				<td class="content" colspan='2' id="runtime"></td>
+		</tr>
+      
+		<tr height=100% class="odd">
+			<th scope="row">내 용</th>
+				<td class="content" colspan="2" id="content"></td>
+		</tr>
+		</tbody>
+	</table>
+	
+</form>
+</div>
+모달팝업 뷰. 추후 구현 예정.
+-->

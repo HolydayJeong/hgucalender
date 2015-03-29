@@ -1,0 +1,12 @@
+<query id="getImgSrc" action="select">
+    <tables>
+        <table name="files" />
+    </tables>
+    <columns>
+        <column name="source_filename" />
+		<column name="uploaded_filename" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="file_srl" var="file_srl" notnull="notnull" />
+	</conditions>
+</query>

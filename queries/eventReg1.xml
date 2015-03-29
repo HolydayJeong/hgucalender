@@ -1,0 +1,8 @@
+<query id="eventReg1" action="insert">
+    <tables>
+        <table name="hgucalendar_seat" />
+    </tables>
+    <columns>
+		<column name="event_srl" var="event_srl" notnull="notnull"/>
+    </columns>
+</query>

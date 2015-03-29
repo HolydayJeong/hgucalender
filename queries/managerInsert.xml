@@ -1,0 +1,13 @@
+<query id="managerInsert" action="insert">
+    <tables>
+        <table name="hgucalendar_applicant" />
+    </tables>
+    <columns>
+        <column name="groupname" var="test" default="Manager" notnull="notnull"/>
+		<column name="category" var="test1" default="관리자" notnull="notnull"/>
+		<column name="groupPermited" var="test2" default="1"/>
+		<column name="isManager" var="test3" default="1"/>
+		<column name="id" var="user_id" notnull="notnull"/>
+		<column name="regdate" var="regdate" default="curdate()" notnull="notnull"/>
+    </columns>
+</query>

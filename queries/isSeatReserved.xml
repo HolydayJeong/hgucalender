@@ -1,0 +1,12 @@
+<query id="isSeatReserved" action="select">
+    <tables>
+        <table name="hgucalendar_seat" />
+    </tables>
+    <columns>
+        <column name="id" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="event_srl" var="event_srl" />
+		<condition operation="equal" column="seat" var="seat" pipe="and" />
+    </conditions>
+</query>

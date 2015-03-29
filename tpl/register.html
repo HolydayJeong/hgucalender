@@ -1,0 +1,80 @@
+<html>
+<title>단체 등록</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+$(document).ready(function(){
+	$("#submit").click(function(){
+		if($('#writer').val()==""){
+			alert("작성자를 입력해 주세요.");
+			$('#writer').focus();
+			return false;
+		}
+		if($('#association').val()==""){
+			alert("단체명을 입력해 주세요.");
+			$('#association').focus();
+			return false;
+		}
+		if($('#field').val()==""){
+			alert("분야를 선택해 주세요.");
+			$('#field').focus();
+			return false;
+		}
+		$('#form').submit();
+	
+
+	$("#close").click(function(){
+		window.close();
+		return false;
+	});
+	
+})
+</script>
+
+<body leftmargin="0" topmargain="0" marginheight="0">
+<br><br>
+<form action="http://127.0.0.1/xe/index.php" method="post" >
+	<input type="hidden" name="act" value="procHgucalendarUserReg">
+	<table width="500" border="1" align="center" cellpadding="5" cellspacing="0" style="border:0px #3333333 solid;border-top-width:3px;">
+	  <tr>
+	   <td colspan="2" align="center"><b>단체 등록<b></td>
+	  </tr>
+	
+	   <tr>
+		<td colspan="2" align="center">자세히 입력해 주세요.</td>
+	   </tr>
+	 
+	   <tr>
+		<td align="center">작성자</td>
+		<td>
+		 <input type="text" name="id" id="writer" size="20">
+		</td>
+	   </tr>
+
+	   <tr>
+		<td align="center">단체명</td>
+		<td>
+		 <input type="text" name="groupname" id="association" size="20">
+		</td>
+	   </tr>
+
+	   <tr>
+		<td align="center">분 야</td>
+		<td>
+		<select name="category" class="field">
+		<option value="">선택</option>
+		<option value="동아리 행사">동아리 행사</option>
+		<option value="외부 행사">외부 행사</option>
+		<option value="내부 행사">내부 행사(특강, 축제 등)</option>
+		</td>
+	   </tr>
+	 
+	   <tr>
+		<td colspan="2" align="center">
+		<input type="submit" id="submit" value="등록">
+		<input type="reset" id="close" value="취소">
+		</td>
+	   </tr>
+	  </table>
+ </form>
+</body>
+</html>

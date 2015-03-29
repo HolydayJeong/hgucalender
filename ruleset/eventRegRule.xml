@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleset version="1.5.0">
+	<customrules>
+		<rule name="farecheck" type="regex" test="/^[1-9][0-9]*$/">
+			<message> should be number. 가격은 숫자만 입력하세요 </message>
+		</rule>
+	</customrules>
+    <fields>
+        <field name="fare" rule="farecheck" />
+		<field name="runtime" rule="number" />
+    </fields>
+</ruleset>

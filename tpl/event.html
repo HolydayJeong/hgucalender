@@ -1,0 +1,91 @@
+<form>
+	
+	<style type="text/css">
+		td, tr
+		{
+			border:1px solid rgba(0, 0, 0, .1);
+		}
+		.reserve 
+		{
+			border:0px
+		}
+		.seatManage
+		{
+			border:0px
+		}
+		
+	</style>
+
+	<table width="80%", align="center">
+		
+		<tr align="center">
+			<td colspan='3' height="30px" style="font-family:맑은 고딕;color:black;font-size:30px;">{$eventinfo->eventname}</td>
+			<script>
+			if('{$eventinfo->uploaded_filename}' ==''){
+				document.write("<td rowspan='6' class='image' align='center'>이미지를 등록해주세요</td>");
+			}
+			else
+				document.write("<td rowspan='6' class='image'><img src='./"+'{$eventinfo->uploaded_filename}'+"' alt='{$eventinfo->source_filename}' class='iePngFix' style='cursor: pointer;' width='500' height='300' rel='xe_gallery'></td>");
+			</script>
+			
+		</tr>
+		
+		<tr align="center">
+			<td colspan='2' width="30%" style="font-family:돋움;color:gray;font-size:13px;">{$eventinfo->startdate} ~ {$eventinfo->enddate}</td>
+			<td width="15%"><p style="font-family:돋움;color:gray;font-size:13px;">{$eventinfo->runtime}분</p></td>
+		</tr>
+	
+
+		<tr align="center">
+			<td width="10%" style="font-family:맑은 고딕;color:black;font-size:15px;" align="center"><b>주 최</b></td>
+			<td colspan='2' style="font-family:맑은 고딕;color:black;font-size:15px;">{$eventinfo->groupname}</td>
+		</tr>
+      
+		<tr align="center">
+			<td style="font-family:맑은 고딕;color:black;font-size:15px;" align="center"><b>장 소</b></td>
+			<td colspan='2' style="font-family:맑은 고딕;color:black;font-size:15px;">{$eventinfo->place}</td>
+		</tr>
+
+		<tr align="center">
+			<td style="font-family:맑은 고딕;color:black;font-size:15px;" align="center"><b>가 격</b></td>
+			<td colspan='2' style="font-family:맑은 고딕;color:black;font-size:15px;">{$eventinfo->fare}</td>
+		</tr>
+      
+		<tr align="center">
+			<td style="font-family:맑은 고딕;color:black;font-size:15px;" align="center"><b>연락처</b></td>
+			<td colspan='2' style="font-family:맑은 고딕;color:black;font-size:15px;">{$eventinfo->phone}</td>
+		</tr>
+		
+		<tr align="center">
+				<td colspan='4' style="font-family:맑은 고딕;color:black;font-size:20px;">{$oDocument->getContent()}</td>
+		</tr>
+		<script>
+
+		 (function($){
+			  $(document).ready(function(){
+				  $('#reserve').click(function(){
+					  location.href="./index.php?mid={$module_info->mid}&act=dispHgucalendarSeatView&event_srl={$eventinfo->event_srl}";
+				  })
+
+				  $('#seatManage').click(function(){
+					  location.href="./index.php?mid={$module_info->mid}&act=dispHgucalendarSeatManager&event_srl={$eventinfo->event_srl}";
+				  });
+			  });
+		 })(jQuery);
+
+		if("{$eventinfo->id}" == "{$logged_info->user_id}"){
+			document.write('<td text align="center" colspan="3"><a href="./index.php?mid={$module_info->mid}&document_srl={$eventinfo->document_srl}&act=dispHgucalendarEventModify&start={$eventinfo->startdate}&end={$eventinfo->enddate}" ><span>수정</span></a><td>');
+		}
+
+		if({$eventinfo->perform} == 1){
+			if('{$logged_info->user_id}' == '{$eventinfo->id}'){
+			document.write('<table border="0" align="center"><tr class="seatManage"><td colspan="2" class="seatManage"/><td align="center" class="seatManage"><input style="font-family:맑은 고딕;font-size:15px;" type="button" id="seatManage" value="예약관리"/></td><td align="center" class="reserve"><input style="font-family:맑은 고딕;font-size:15px;" type="button" id="reserve" value="예약"/></td></tr></table>');
+			}
+			else
+			document.write('<tr class="reserve"><td colspan="3" class="reserve"/><td align="center" class="reserve"><input style="font-family:맑은 고딕;font-size:15px;" type="button" id="reserve" value="예약"/></td></tr>');
+		}
+
+		</script>
+	</table>
+	
+</form>
